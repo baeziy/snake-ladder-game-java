@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.Random;
 
 public class game{
 
@@ -59,37 +60,73 @@ class Gameplay{
         game.clearScreen();
 
         // toss() being called
-        boolean toss_winner = toss();
+        boolean if_toss_winner_is_p1 = toss();
 
         // letting users if player 1 has won or player 2 has won the toss
-        if (toss_winner)System.out.println(p1.name + " has WON the toss!");
+        if (if_toss_winner_is_p1)System.out.println(p1.name + " has WON the toss!");
         else System.out.println(p2.name + " has WON the toss!");
 
         // asking user to press ENTER
-        System.out.print("Press ENTER to continue");
+        System.out.print("Press ENTER to Play Game");
         scanner.nextLine();
         game.clearScreen();
 
         // gameInitiated() being called
-        gameInitiated(toss_winner);
+        gameInitiated(if_toss_winner_is_p1, p1, p2);
         
 
     }
 
-    public void gameInitiated(boolean toss_winner){
+    // gameInitiated function
+    public void gameInitiated(boolean if_toss_winner_is_p1, Player p1, Player p2){
+        // objects declared for toss winner and loser {tells who has the first turn}
+        Player toss_winner = new Player();
+        Player toss_loser = new Player();
+
+        // setting toss winner and toss loser
+        if (if_toss_winner_is_p1){
+            toss_winner.setter(p1.name);
+            toss_loser.setter(p2.name);
+        }
+        else{
+            toss_winner.setter(p2.name);
+            toss_loser.setter(p1.name);
+        }
+
+
+        int dice;
+        while(true){
+
+        System.out.print(toss_winner.name + " press ENTER to roll the dice!");
+        scanner.nextLine();
         
+        dice = roll_dice();
+
+
+        }
 
 
 
+    }
+
+    public int roll_dice(){
+
+        Random rand = new Random();
+        int randomNum = rand.nextInt((6 - 1) + 1) + 1;
+        return randomNum;
     }
 }
 
 class Player{
-    int score;
+    int position;
     String name;
 
+    public Player(){position = 1;}
     public Player(String Name){
         name = Name;
-        score = 0;
+        position = 1;
+    }
+    public void setter(String Name){
+        name = Name;
     }
 }
