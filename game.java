@@ -96,36 +96,54 @@ class Gameplay{
         // creating map for the game
         int[][] map = new int[3][100];
         create_map(map);
-
-
-
-        // for(int i=0; i<3; i++){
-        //     for(int j=0; j<100; j++){
-        //          System.out.print(map[i][j] + " ");
-        //     }
-        //     System.out.println();
-
-        // }
-        int dice;
-        while(true){
         game.clearScreen();
 
-        System.out.print(toss_winner.name + " press ENTER to roll the dice!");
-        scanner.nextLine();
+
+        int dice;
+
+        boolean greater_than_hundred_checker = false;
+        while(true){
         
-        dice = roll_dice();
 
-        // checking if toss winner has won the game.
-        if(isWinner(toss_winner, dice)){
-            System.out.println("\nPlayer: " + toss_winner.name + "\nPosition: " + toss_winner.position);
-            System.out.println(toss_winner.name + "WINS!!!!!");
-            System.exit(0);
-        }
+            /////////* Toss winner's turn *///////////
+            System.out.print("\n\n" + toss_winner.name + " press ENTER to roll the dice!");
+            scanner.nextLine();
+            game.clearScreen();
 
-
+            dice = roll_dice();
+            System.out.println("\nDice Value: " + dice);
 
 
+            // checking if toss winner has won the game.
+            if(isWinner(toss_winner, dice)){
+                System.out.println("Player: " + toss_winner.name + "\nPrevious Position: " + toss_loser.prev_pos + "\nNew Position: " + toss_winner.position);
+                System.out.println("********  " + toss_winner.name + " WINS!!!!!" + "  ******");
+                System.exit(0);
+            }
+            else{
+                checkSnakeOrLadder(map, dice, toss_winner);
+            }
 
+
+            /////////* Toss loser's turn *///////////
+            System.out.print("\n\n" + toss_loser.name + " press ENTER to roll the dice!");
+            scanner.nextLine();
+            game.clearScreen();
+            
+            dice = roll_dice();
+            System.out.println("\nDice Value: " + dice);
+
+
+            // checking if toss winner has won the game.
+            if(isWinner(toss_loser, dice)){
+                System.out.println("Player: " + toss_loser.name+ "\nPrevious Position: " + toss_loser.prev_pos + "\nNew Position: " + toss_loser.position);
+                System.out.println("********  " + toss_loser.name + " WINS!!!!!" + "  ******");
+                System.exit(0);
+            }
+            // checking + updating positions
+            else{
+                checkSnakeOrLadder(map, dice, toss_loser);
+            }
 
         }
 
@@ -133,8 +151,39 @@ class Gameplay{
 
     }
 
+    public void checkSnakeOrLadder(int map[][], int dice, Player p){
+        if (p.position + dice > 100){
+            System.out.println("Sorry :/ so close to win, try again next time? {dice + position > 100}");
+            System.out.println("Player: " + p.name+ "\nPrevious Position: " + p.prev_pos + "\nNew Position: " + p.position);
+            return;
+        }
+        else if(map[1][p.position-1 + dice] == -1){
+            p.prev_pos =p.position;
+            p.position = map[2][p.position-1 + dice];
+
+            System.out.println("Oh no!!!! a SNAKE bit you");
+            System.out.println("Player: " + p.name+ "\nPrevious Position: " + p.prev_pos + "\nNew Position: " + p.position);
+        }
+
+        else if (map[1][p.position-1 + dice] == -2){
+            p.prev_pos =p.position;
+            p.position = map[2][p.position-1 + dice];
+
+            System.out.println("Hurrayy!!! you climed a ladder");
+            System.out.println("Player: " + p.name + "\nPrevious Position: " + p.prev_pos+ "\nNew Position: " + p.position);
+        }
+        else{
+            p.prev_pos =p.position;
+            p.position += dice;
+            System.out.println("Player: " + p.name+ "\nPrevious Position: " + p.prev_pos + "\n New Position: " + p.position);
+        }
+
+    }
+
+
     public boolean isWinner(Player p, int dice){
         if(p.position + dice == 100){
+            p.prev_pos = p.position;
             p.position += dice;
             return true;
         } 
@@ -169,11 +218,11 @@ class Gameplay{
                 map[1][94] = -1;
 
                 // snake tail
-                map[2][98] = 53;
-                map[2][69] = 54;
-                map[2][51] = 41;
-                map[2][24] = 1;
-                map[2][94] = 71;
+                map[2][98] = 54;
+                map[2][69] = 55;
+                map[2][51] = 42;
+                map[2][24] = 2;
+                map[2][94] = 72;
 
 
                 // ladder tail
@@ -184,11 +233,11 @@ class Gameplay{
                 map[1][16] = -2;
 
                 // ladder head
-                map[2][5] = 24;
-                map[2][10] = 39;
-                map[2][59] = 84;
-                map[2][45] = 89;
-                map[2][16] = 68;
+                map[2][5] = 25;
+                map[2][10] = 40;
+                map[2][59] = 85;
+                map[2][45] = 90;
+                map[2][16] = 69;
                 
             }
         }
@@ -203,13 +252,15 @@ class Gameplay{
 }
 
 class Player{
+    int prev_pos;
     int position;
     String name;
 
-    public Player(){position = 1;}
+    public Player(){position = 1; prev_pos = 1;}
     public Player(String Name){
         name = Name;
         position = 1;
+        prev_pos = 1;
     }
     public void setter(String Name){
         name = Name;
