@@ -1,6 +1,8 @@
 import java.util.Scanner;
 import java.util.Random;
 
+
+// starting class
 public class game{
 
     public static void main(String []args){
@@ -36,6 +38,7 @@ public class game{
 
 }
 
+// main game class
 class Gameplay{
     Scanner scanner = new Scanner(System.in);  
     
@@ -151,12 +154,18 @@ class Gameplay{
 
     }
 
+
+    // function checks and updates the player postion according to snake or ladder
     public void checkSnakeOrLadder(int map[][], int dice, Player p){
+
+        // if dice + current position value > 100 then try again next time
         if (p.position + dice > 100){
             System.out.println("Sorry :/ so close to win, try again next time? {dice + position > 100}");
             System.out.println("Player: " + p.name+ "\nPrevious Position: " + p.prev_pos + "\nNew Position: " + p.position);
             return;
         }
+
+        // if snakes bites you
         else if(map[1][p.position-1 + dice] == -1){
             p.prev_pos =p.position;
             p.position = map[2][p.position-1 + dice];
@@ -165,6 +174,7 @@ class Gameplay{
             System.out.println("Player: " + p.name+ "\nPrevious Position: " + p.prev_pos + "\nNew Position: " + p.position);
         }
 
+        // if you touch a ladder's tail
         else if (map[1][p.position-1 + dice] == -2){
             p.prev_pos =p.position;
             p.position = map[2][p.position-1 + dice];
@@ -172,6 +182,8 @@ class Gameplay{
             System.out.println("Hurrayy!!! you climed a ladder");
             System.out.println("Player: " + p.name + "\nPrevious Position: " + p.prev_pos+ "\nNew Position: " + p.position);
         }
+
+        // normal scenario
         else{
             p.prev_pos =p.position;
             p.position += dice;
@@ -180,7 +192,7 @@ class Gameplay{
 
     }
 
-
+    // checks if player has won or not
     public boolean isWinner(Player p, int dice){
         if(p.position + dice == 100){
             p.prev_pos = p.position;
@@ -192,19 +204,26 @@ class Gameplay{
 
     }
 
+    // function creates map for the whole game {puts snakes and ladders at multiple locations}
     public void create_map(int map[][]){
 
         for(int i=0; i<3; i++){
+
+            // position filling at level 0
             if(i == 0){
                 for(int j=0; j<100; j++){
                     map[i][j] = j+1; 
                 }
             }
+
+            // snakes and ladders filling at level 1
             else if(i == 1){
                 for(int j=0; j<100; j++){
                     map[i][j] = 0; 
                 }
             }
+
+            // new position according to snake/ladder at level 2
             else{
                 for(int j=0; j<100; j++){
                     map[i][j] = 0; 
@@ -243,6 +262,8 @@ class Gameplay{
         }
     }
 
+
+    // function rolls dice and returns value
     public int roll_dice(){
 
         Random rand = new Random();
@@ -251,6 +272,8 @@ class Gameplay{
     }
 }
 
+
+// player class
 class Player{
     int prev_pos;
     int position;
