@@ -93,7 +93,19 @@ class Gameplay{
             toss_loser.setter(p1.name);
         }
 
+        // creating map for the game
+        int[][] map = new int[3][100];
+        create_map(map);
 
+
+
+        // for(int i=0; i<3; i++){
+        //     for(int j=0; j<100; j++){
+        //          System.out.print(map[i][j] + " ");
+        //     }
+        //     System.out.println();
+
+        // }
         int dice;
         while(true){
 
@@ -103,10 +115,63 @@ class Gameplay{
         dice = roll_dice();
 
 
+
+
         }
 
 
 
+    }
+
+    public void create_map(int map[][]){
+
+        for(int i=0; i<3; i++){
+            if(i == 0){
+                for(int j=0; j<100; j++){
+                    map[i][j] = j+1; 
+                }
+            }
+            else if(i == 1){
+                for(int j=0; j<100; j++){
+                    map[i][j] = 0; 
+                }
+            }
+            else{
+                for(int j=0; j<100; j++){
+                    map[i][j] = 0; 
+                }
+
+                // snake head
+                map[1][98] = -1;
+                map[1][69] = -1;
+                map[1][51] = -1;
+                map[1][24] = -1;
+                map[1][94] = -1;
+
+                // snake tail
+                map[2][98] = 53;
+                map[2][69] = 54;
+                map[2][51] = 41;
+                map[2][24] = 1;
+                map[2][94] = 71;
+
+
+                // ladder tail
+                map[1][5] = -2;
+                map[1][10] = -2;
+                map[1][59] = -2;
+                map[1][45] = -2;
+                map[1][16] = -2;
+
+                // ladder head
+                map[2][5] = 24;
+                map[2][10] = 39;
+                map[2][59] = 84;
+                map[2][45] = 89;
+                map[2][16] = 68;
+                
+            }
+        }
     }
 
     public int roll_dice(){
