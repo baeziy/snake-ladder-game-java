@@ -108,11 +108,21 @@ class Gameplay{
         // }
         int dice;
         while(true){
+        game.clearScreen();
 
         System.out.print(toss_winner.name + " press ENTER to roll the dice!");
         scanner.nextLine();
         
         dice = roll_dice();
+
+        // checking if toss winner has won the game.
+        if(isWinner(toss_winner, dice)){
+            System.out.println("\nPlayer: " + toss_winner.name + "\nPosition: " + toss_winner.position);
+            System.out.println(toss_winner.name + "WINS!!!!!");
+            System.exit(0);
+        }
+
+
 
 
 
@@ -120,6 +130,16 @@ class Gameplay{
         }
 
 
+
+    }
+
+    public boolean isWinner(Player p, int dice){
+        if(p.position + dice == 100){
+            p.position += dice;
+            return true;
+        } 
+
+        return false;
 
     }
 
